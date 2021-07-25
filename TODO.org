@@ -1,0 +1,49 @@
+#+TITLE: Randomness TODO
+#+AUTHOR:    William Clifford
+#+EMAIL:     will@wobh.org
+#+DATE:      2021-07-24 Sat
+
+* TODO improve test reporting
+* TODO add tests for shuffling, sampling, using biases
+* TODO setup asdf test op
+
+https://common-lisp.net/project/asdf/asdf/Predefined-operations-of-ASDF.html#test_002dop
+
+* TODO Implement PCG Random Number Generation?
+
+This seems like it might be fun, and as a generator would have a lot
+of useful properties we wouldn't necessarily get from an
+implementation's ~make-random-state~:
+
+- https://github.com/imneme/pcg-c-basic
+
+Not sure if we can make it a ~*random-state*~ compatible thing without
+some heavy lifting, but maybe!
+
+- https://www.pcg-random.org/
+
+* TODO generate non-repeating sequences
+
+Based on:
+
+- http://preshing.com/20121224/how-to-generate-a-sequence-of-unique-random-integers/
+
+Possibly could be integrated with PCG.
+
+I attempted this in a small way here:
+
+https://exercism.io/my/solutions/7943ffe042e24686b09740553141c8a4?iteration_idx=3
+
+but I'm sure there are bugs.
+
+* TODO Toys
+
+I don't know if this should be included here or belongs in a separate
+system but, it would be fun to have things like:
+
+- dice
+- cards
+- various fortune-telling systems
+  - tarot
+  - i-ching
+  - magic 8-ball

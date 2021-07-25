@@ -1,0 +1,72 @@
+#+TITLE: Randomness README
+#+AUTHOR:    William Clifford
+#+EMAIL:     will@wobh.org
+#+DATE:      2021-07-24 Sat
+
+* Introduction
+
+Provides some basic randomness tools.
+
+Numbers, characters
+
+- ~random-whole~
+- ~random-range~
+- ~random-digit~
+- ~random-alpha~
+
+Array index or subscripts
+
+- ~random-array-index~
+- ~random-array-subscripts~
+
+Random elements
+
+- ~random-nth~
+- ~random-char~
+- ~random-scref~
+- ~random-elt~
+- ~random-aref~
+
+Samplef generic-function
+
+- ~samplef~
+
+Bias maker (use with ~samplef~)
+
+- ~make-bias~
+
+Shuffles
+
+- ~nshuffle~
+- ~shuffle~
+
+* Purpose
+
+This is here shared with the idea that some might find it useful for
+personal experiments and toys--that's all I'm using it for. It might
+also be cautionarily if not pedagogically useful. All that said, it
+should not expected to have any performance characteristics, or be
+useful in any way.
+
+Commercial use is forbidden.
+
+Non-casual personal use is strongly discouraged.
+
+Really, the main purpose here is simply a self-demonstration of module
+making that I can reuse for making more complex projects.
+
+* Instructions
+
+To use:
+
+1. Clone repository
+2. Run ~make install~ this will install it into
+   ~$XDG_DATA_HOME/common-lisp/source/org.wobh.common-lisp.tools.randomness~
+3. in REPL ~(require :asdf)~ (as needed)
+4. ~(require :org.wobh.common-lisp.tools.randomness)~
+
+The test package is simply Lisp assertions and loads with the rest of
+the system. If the system loads without errors all the tests passed.
+
+The package defines a nickname of ~randomness~ for convenience.
+
