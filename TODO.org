@@ -1,7 +1,7 @@
-#+TITLE: Randomness TODO
-#+AUTHOR:    William Clifford
-#+EMAIL:     will@wobh.org
-#+DATE:      2021-07-24 Sat
+#+title: Randomness TODO
+#+date: <2021-07-24 Sat>
+#+author: William Clifford
+#+email: will@wobh.org
 
 * TODO improve test reporting
 * TODO add tests for shuffling, sampling, using biases

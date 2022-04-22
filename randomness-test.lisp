@@ -1,5 +1,7 @@
+;; -*- mode: lisp -*-
+
 (defpackage #:org.wobh.common-lisp.tools.randomness-test
-  (:use #:cl)
+  (:use #:common-lisp)
   (:local-nicknames (#:randomness #:org.wobh.common-lisp.tools.randomness))
   (:documentation "ORG.WOBH.COMMON-LISP.TOOLS.RANDOMNESS-TEST
 
