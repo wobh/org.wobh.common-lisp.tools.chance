@@ -1,4 +1,4 @@
-#+title: Randomness TODO
+#+title: Chance TODO
 #+date: <2021-07-24 Sat>
 #+author: William Clifford
 #+email: will@wobh.org

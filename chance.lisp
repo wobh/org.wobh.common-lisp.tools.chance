@@ -1,8 +1,8 @@
 ;; -*- mode: lisp -*-
 
-(defpackage #:org.wobh.common-lisp.tools.randomness
+(defpackage #:org.wobh.common-lisp.tools.chance
   (:use #:common-lisp)
-  (:nicknames #:randomness)
+  (:nicknames #:chance)
   (:export #:random-whole #:random-range
 	   #:random-digit #:random-alpha)
   (:export #:random-array-index #:random-array-subscripts)
@@ -11,11 +11,11 @@
 	   #:random-aref)
   (:export #:samplef #:make-bias)
   (:export #:nshuffle #:shuffle)
-  (:documentation "ORG.WOBH.COMMON-LISP.TOOLS.RANDOMNESS
+  (:documentation "ORG.WOBH.COMMON-LISP.TOOLS.CHANCE
 
-Provides randomness utilities."))
+Provides chance utilities."))
 
-(in-package #:org.wobh.common-lisp.tools.randomness)
+(in-package #:org.wobh.common-lisp.tools.chance)
 
 ;;; Random numbers and characters
 

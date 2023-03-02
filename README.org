@@ -1,4 +1,4 @@
-#+title: Randomness README
+#+title: Chance README
 #+date: <2021-07-24 Sat>
 #+author: William Clifford
 #+email: will@wobh.org
@@ -64,14 +64,14 @@ To use:
 
 1. Clone repository
 2. Run ~make install~ this will install it into
-   ~${XDG_DATA_HOME}/common-lisp/source/org.wobh.common-lisp.tools.randomness~
+   ~${XDG_DATA_HOME}/common-lisp/source/org.wobh.common-lisp.tools.chance~
 3. in REPL ~(require "asdf")~ (as needed)
-4. ~(require :org.wobh.common-lisp.tools.randomness)~
+4. ~(require :org.wobh.common-lisp.tools.chance)~
 
 The test package is simply Lisp assertions and loads with the rest of
 the system. If the system loads without errors all the tests passed.
 
-The package defines a nickname of ~randomness~ for convenience.
+The package defines a nickname of ~chance~ for convenience.
 
 * COMMENT org settings
 #+options: ':nil *:t -:t ::t <:t H:6 \n:nil ^:t arch:headline

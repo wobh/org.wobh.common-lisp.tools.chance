@@ -1,8 +1,8 @@
 # -*- mode: make; -*-
 
-system_name = org.wobh.common-lisp.tools.randomness
+system_name = org.wobh.common-lisp.tools.chance
 system_path = ${XDG_DATA_HOME}/common-lisp/source
-system_files = org.wobh.common-lisp.tools.randomness.asd randomness.lisp randomness-test.lisp
+system_files = org.wobh.common-lisp.tools.chance.asd chance.lisp chance-test.lisp
 
 # see https://asdf.common-lisp.dev/asdf.html#Configuring-ASDF-to-find-your-systems
 installdir = $(system_path)/$(system_name)
