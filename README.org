@@ -10,6 +10,8 @@
 
 Provides some basic randomness tools.
 
+* Features
+
 Numbers, characters
 
 - ~random-whole~
@@ -42,6 +44,9 @@ Shuffles
 
 - ~nshuffle~
 - ~shuffle~
+
+See the TODO document for future ideas and features that might appear
+here.
 
 * Purpose
 

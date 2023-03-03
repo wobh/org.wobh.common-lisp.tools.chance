@@ -1,15 +1,9 @@
 #+title: Chance TODO
-#+date: <2021-07-24 Sat>
+#+date: <2023-03-04 Sat>
 #+author: William Clifford
 #+email: will@wobh.org
 
-* TODO improve test reporting
-* TODO add tests for shuffling, sampling, using biases
-* TODO setup asdf test op
-
-https://common-lisp.net/project/asdf/asdf/Predefined-operations-of-ASDF.html#test_002dop
-
-* TODO Implement PCG Random Number Generation?
+* DOING Implement PCG Random Number Generation?
 
 This seems like it might be fun, and as a generator would have a lot
 of useful properties we wouldn't necessarily get from an
@@ -21,6 +15,8 @@ Not sure if we can make it a ~*random-state*~ compatible thing without
 some heavy lifting, but maybe!
 
 - https://www.pcg-random.org/
+
+Update: This is happening.
 
 * TODO generate non-repeating sequences
 
@@ -36,6 +32,12 @@ https://exercism.io/my/solutions/7943ffe042e24686b09740553141c8a4?iteration_idx=
 
 but I'm sure there are bugs.
 
+* TODO improve test reporting
+* TODO add tests for shuffling, sampling, using biases
+* TODO setup asdf test op
+
+https://common-lisp.net/project/asdf/asdf/Predefined-operations-of-ASDF.html#test_002dop
+
 * TODO Toys
 
 I don't know if this should be included here or belongs in a separate
@@ -47,3 +49,9 @@ system but, it would be fun to have things like:
   - tarot
   - i-ching
   - magic 8-ball
+
+* TODO Fakery
+
+There's a number of libraries out there that generate fake info in
+various formats and that seems like a fun thing to build. It would
+resonate with another interest of mine: grammars!
