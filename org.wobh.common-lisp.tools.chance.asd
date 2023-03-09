@@ -6,4 +6,5 @@
   :license "Copyright © 2016-2023 William Clifford All rights reserved."
   :author "William Clifford <will@wobh.org>"
   :components ((:file "chance")
-	       (:file "chance-test")))
+	       (:file "chance-test")
+	       (:file "chance-user")))
