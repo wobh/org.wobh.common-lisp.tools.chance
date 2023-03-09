@@ -142,11 +142,11 @@ Special features for ~chance-user~ forthcoming, see TODO.
 
 ** ~chance-test~
 
-Currently the test package is a file of basic lisp assertions and
-loads. If =(load "chance-test")= raises no errors all the tests
-passed.
+To run tests: =(asdf:test-system "org.wobh.common-lisp.tools.chance")=
 
-Test improvement effort forthcoming, see TODO.
+The test package is simply a package of Lisp assertions. Running the
+tests tries to load the test package and if it loads without errors
+all the tests passed.
 
 * COMMENT org settings
 #+options: ':nil *:t -:t ::t <:t H:6 \n:nil ^:t arch:headline
