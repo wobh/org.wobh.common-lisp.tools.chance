@@ -18,6 +18,36 @@ some heavy lifting, but maybe!
 
 Update: This is happening.
 
+* [0/3] misc clean up and reorganize
+
+- [ ] rename ~make-bias~
+  - ~make-biased-sampler~ ?
+  - ~make-biased-sequence-sampler~ ?
+- [ ] reorganize "samplers" functions
+  - include ~make-bias~ (under new name) in the sequence-samplers
+- [ ] setup ~random-index~
+  - ~random-sequence-index~
+  - ~random-position~ <- this would agree with the sequence function
+
+* TODO setup resevoir sampling
+
+This will allow implementation of samplers for:
+
+- lists (traversing them only once)
+  - alists
+  - plists
+  - trees
+- hash-tables
+
+This might provide some insight into a better way to write (maybe even
+just naming things) in the biased-sampler functions.
+
+** References
+- https://en.wikipedia.org/wiki/Reservoir_sampling
+- https://lisptips.com/post/43404489000/the-tree-walkers-of-cl
+  - use the tree-equal technique to walk the tree to be sampledx
+
+* TODO add tests for shuffling, sampling, using biases
 * TODO generate non-repeating sequences
 
 Based on:
@@ -33,7 +63,6 @@ https://exercism.io/my/solutions/7943ffe042e24686b09740553141c8a4?iteration_idx=
 but I'm sure there are bugs.
 
 * TODO improve test reporting
-* TODO add tests for shuffling, sampling, using biases
 * TODO setup asdf test op
 
 https://common-lisp.net/project/asdf/asdf/Predefined-operations-of-ASDF.html#test_002dop
