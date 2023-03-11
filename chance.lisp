@@ -1,16 +1,26 @@
 ;; -*- mode: lisp -*-
 
 (defpackage #:org.wobh.common-lisp.tools.chance
-  (:use #:common-lisp)
   (:nicknames #:chance)
-  (:export #:random-whole #:random-range
-	   #:random-digit #:random-alpha)
-  (:export #:random-array-index #:random-array-subscripts)
-  (:export #:random-nth #:random-char
-	   #:random-svref #:random-elt
-	   #:random-aref)
-  (:export #:samplef #:make-bias)
-  (:export #:nshuffle #:shuffle)
+  (:use #:common-lisp)
+  ;; numbers and characters
+  (:export #:random-whole
+           #:random-range
+           #:random-digit
+           #:random-alpha)
+  ;; sequence position and array index, subscripts
+  (:export #:random-position
+           #:random-array-row-major-index
+           #:random-array-subscripts)
+  ;; sequence elements
+  (:export #:random-char
+           #:random-svref
+           #:random-aref
+           #:random-nth
+           #:random-elt)
+  ;; shuffles
+  (:export #:nshuffle
+           #:shuffle)
   (:documentation "ORG.WOBH.COMMON-LISP.TOOLS.CHANCE
 
 Provides chance utilities."))
@@ -22,145 +32,98 @@ Provides chance utilities."))
 (defun random-whole (bound &optional (random-state *random-state*))
   "Return random whole number between 1 and `bound'."
   (declare (type integer bound))
-  (let ((*random-state* random-state))
-    (1+ (random bound))))
+  (1+ (random bound
+              random-state)))
 
 (defun random-range (bound1 bound2 &optional (random-state *random-state*))
   "Return random number between bounds, inclusive."
-  (let ((*random-state* random-state)
-	(upper (min bound1 bound2))
+  (let ((upper (min bound1 bound2))
         (lower (1+ (max bound1 bound2))))
     (+ upper
-       (random (- lower upper)))))
+       (random (- lower upper)
+               random-state))))
 
 (defun random-digit (&optional (base 10) (random-state *random-state*))
   "Return random digit character in given `base', default 10."
-  (let ((*random-state* random-state))
-    (digit-char (random base)
-		base)))
+  (digit-char (random base random-state)
+              base))
 
 (defun random-alpha (&optional (random-state *random-state*))
   "Return random capital letter character from A-Z."
-  (let ((*random-state* random-state))
-    (digit-char (+ 10 (random 26)) ; NOFIX: do NOT depend on `random-range'
-		36)))
+  (digit-char (+ 10 (random 26 random-state)) ; NOFIX: do NOT depend on `random-range'
+              36))
 
-
-;;; Random array index and subscripts
 
-(defun random-array-index (array &optional (random-state *random-state*))
-  "Return random index in array."
-  (let ((*random-state* random-state))
-    (random (array-total-size array))))
+;;; Random sequence position, array index or subscripts
 
-(defun random-array-subscripts (array &optional (random-state *random-state*))
-  "Create a list random subscripts in array."
-  (let ((*random-state* random-state))
-    (mapcar #'random
-	    (array-dimensions array))))
+(defun random-position (a-sequence &optional (random-state *random-state*))
+  "Return random position (index) in `a-sequence'."
+  (let ((limit (length a-sequence)))
+    (random limit
+            random-state)))
 
-
-;;; Random elements
+(defun random-array-row-major-index (an-array &optional (random-state *random-state*))
+  "Return random index in `an-array'."
+  (let ((limit (array-total-size an-array)))
+    (random limit
+            random-state)))
 
-(defun random-nth (list &optional (random-state *random-state*))
-  "Return random item of a list."
-  (let ((*random-state* random-state)
-	(length-list (length list)))
-    (when (< 0 length-list)
-      (nth (random length-list)
-	   list))))
+(defun random-array-subscripts (an-array &optional (random-state *random-state*))
+  "Return a list random subscripts in `an-array'."
+  (flet ((this-random (limit)
+           (random limit random-state)))
+    (mapcar #'this-random
+            (array-dimensions an-array))))
 
-(defun random-char (string &optional (random-state *random-state*))
-  "Return random element of a string."
-  (let ((*random-state* random-state)
-	(length-string (length string)))
-    (when (< 0 length-string)
-      (char string
-            (random length-string)))))
 
-(defun random-svref (simple-vector &optional (random-state *random-state*))
-  "Return random element of a simple-vector."
-  (let ((*random-state* random-state)
-	(length-simple-vector (length simple-vector)))
-    (when (< 0 length-simple-vector)
-      (svref simple-vector
-             (random length-simple-vector)))))
+;;; Random elements of sequences or arrays
 
-;; More generic, less efficient
-(defun random-elt (sequence &optional (random-state *random-state*))
-  "Return random element of any sequence."
-  (let ((*random-state* random-state)
-	(length-sequence (length sequence)))
-    (when (< 0 length-sequence)
-      (elt sequence
-	   (random length-sequence)))))
+(defun random-char (a-string &optional (random-state *random-state*))
+  "Return random character in `a-string'."
+  (let ((limit (length a-string)))
+    (char a-string
+          (random limit random-state))))
 
-(defun random-aref (array &optional (random-state *random-state*))
-  "Return random element of an array."
-  (let ((*random-state* random-state))
-    (row-major-aref array
-		    (random-array-index array))))
+(defun random-svref (a-simple-vector &optional (random-state *random-state*))
+  "Return random element in `a-simple-vector'."
+  (let ((limit (length a-simple-vector)))
+    (svref a-simple-vector
+           (random limit random-state))))
 
-
-;;; Samplef and make-bias
+(defun random-aref (an-array &optional (random-state *random-state*))
+  "Return random element in `an-array'."
+  (let ((limit (array-total-size an-array)))
+    (row-major-aref an-array
+                    (random limit random-state))))
 
-(defgeneric samplef (collection &key with random-state)
-  (:documentation "Return a procedurally chosen element of collection.")
+;; less efficient, but probably fine
 
-  (:method ((col list) &key (with #'random-nth) (random-state *random-state*))
-    (let ((*random-state* random-state))
-      (funcall with col)))
+(defun random-nth (a-list &optional (random-state *random-state*))
+  "Return random item in `a-list'."
+  (let ((limit (list-length a-list)))
+    (nth (random limit random-state)
+         a-list)))
 
-  (:method ((col string) &key (with #'random-char) (random-state *random-state*))
-    (let ((*random-state* random-state))
-      (funcall with col)))
+(defun random-elt (a-sequence &optional (random-state *random-state*))
+  "Return random element in `a-sequence' of any type."
+  (let ((limit (length a-sequence)))
+    (elt a-sequence
+         (random limit random-state))))
 
-  (:method ((col vector) &key (with #'random-svref) (random-state *random-state*))
-    (let ((*random-state* random-state))
-      (funcall with col)))
 
-  (:method ((col array) &key (with #'random-aref) (random-state *random-state*))
-    (let ((*random-state* random-state))
-      (funcall with col))))
+;;; Shuffle sequences
 
-(defun make-bias (weight0 weight1 &rest weights-rest)
-  "Return a function that returns a weighted random sample of sequence.
+(defun nshuffle (a-sequence &optional (random-state *random-state*))
+  "Destructively Knuth shuffle `a-sequence'."
+  (let ((seqlen (length a-sequence)))
+    (dotimes (index seqlen a-sequence)
+      (rotatef (elt a-sequence index)
+               (elt a-sequence
+                    (+ index
+                       (random (- seqlen index)
+                               random-state)))))))
 
-The biased function can be used as the `:with' argument for `samplef'
-for any sequence."
-  (let ((weights (list* weight0 weight1 weights-rest)))
-    (assert (= 1 (reduce #'+ weights))
-	    (weights)
-	    "Weights ~S should sum to 1" weights)
-    (let* ((weights-count (length weights))
-           (weighted-norm (reduce #'lcm weights :key #'denominator))
-           (weighted-odds (maplist (lambda (weights)
-				     (* weighted-norm (reduce #'+ weights)))
-                                   weights))
-           (weighted-last (first (last weighted-odds))))
-      (lambda (sequence &optional (random-state *random-state*))
-        (assert (= weights-count (length sequence))
-                (weights-count)
-                "Sequence ~S must have length ~D" sequence weights-count)
-        (let* ((*random-state* random-state)
-	       (pick (+ weighted-last (random weighted-norm)))
-               (index (mod (1- (position-if (lambda (odds) (<= odds pick))
-                                            weighted-odds))
-                           weights-count)))
-          (elt sequence index))))))
-
-
-;;; Shuffle
-
-(defun nshuffle (sequence &optional (random-state *random-state*))
-  "Destructively Knuth shuffle a sequence."
-  (let ((*random-state* random-state)
-	(size (length sequence)))
-    (dotimes (i size sequence)
-      (rotatef (elt sequence i)
-	       (elt sequence (+ i (random (- size i))))))))
-
-(defun shuffle (sequence &optional (random-state *random-state*))
-  "Non-destructively Knuth shuffle a sequence."
-  (let ((*random-state* random-state))
-    (nshuffle (copy-seq sequence))))
+(defun shuffle (a-sequence &optional (random-state *random-state*))
+  "Return a Knuth shuffled copy of `a-sequence'."
+  (nshuffle (copy-seq a-sequence)
+            random-state))

@@ -68,10 +68,9 @@ making that I can reuse for making more complex projects.
 To use:
 
 1. Clone repository
-2. Run ~make install~ this will install it into
-   ~${XDG_DATA_HOME}/common-lisp/source/org.wobh.common-lisp.tools.chance~
-3. in REPL ~(require "asdf")~ (as needed)
-4. ~(require :org.wobh.common-lisp.tools.chance)~
+   - *nix, GitHub :: =git clone https://github.com/wobh/org.wobh.common-lisp.tools.chance.git ${XDG_DATA_HOME}/common-lisp/source/org.wobh.common-lisp.tools.chance=
+2. in REPL ~(require "asdf")~ (as needed)
+3. ~(asdf:load-system :org.wobh.common-lisp.tools.chance)~
 
 The test package is simply Lisp assertions and loads with the rest of
 the system. If the system loads without errors all the tests passed.

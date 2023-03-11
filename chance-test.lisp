@@ -1,7 +1,9 @@
 ;; -*- mode: lisp -*-
 
 (defpackage #:org.wobh.common-lisp.tools.chance-test
+  (:nicknames #:chance-test)
   (:use #:common-lisp)
+  ;; (:use #:chance) ;; maybe?
   (:local-nicknames (#:chance #:org.wobh.common-lisp.tools.chance))
   (:documentation "ORG.WOBH.COMMON-LISP.TOOLS.CHANCE-TEST
 
@@ -58,7 +60,13 @@ tests passed."))
          (indyvar #(:foo :bar :bax :qux))
          (subject (chance:random-svref indyvar)))
     (assert (= expect
-               (position subject indyvar)))))
+               (position subject indyvar))))
+
+  (let* ((*random-state* (make-random-state rstate))
+         (indyvar #(:foo :bar :bax :qux))
+         (subject (chance:random-position indyvar)))
+    (assert (= expect
+               subject))))
 
 ;; FIXME: figure out how to test `nshuffle'.
 ;; (let* ((rstate (make-random-state t))
