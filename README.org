@@ -5,50 +5,13 @@
 #+language: en
 #+select_tags: export
 #+exclude_tags: noexport
+#+startup: overview
 
 * Introduction
 
 Provides some basic randomness tools.
 
-* Features
-
-Numbers, characters
-
-- ~random-whole~
-- ~random-range~
-- ~random-digit~
-- ~random-alpha~
-
-Array index or subscripts
-
-- ~random-array-index~
-- ~random-array-subscripts~
-
-Random elements
-
-- ~random-nth~
-- ~random-char~
-- ~random-svref~
-- ~random-elt~
-- ~random-aref~
-
-Samplef generic-function
-
-- ~samplef~
-
-Bias maker (use with ~samplef~)
-
-- ~make-bias~
-
-Shuffles
-
-- ~nshuffle~
-- ~shuffle~
-
-See the TODO document for future ideas and features that might appear
-here.
-
-* Purpose
+* Purpose and License
 
 This is here shared with the idea that some might find it useful for
 personal experiments and toys--that's all I'm using it for. It might
@@ -56,12 +19,11 @@ also be cautionarily if not pedagogically useful. All that said, it
 should not be expected to have any desireable characteristics or be
 useful in any way.
 
-Non-personal use (for example, commercial) is forbidden.
+Non-personal use is forbidden. (For example: commercial use is
+forbidden. Use by non-persons, or use by any person or agent acting on
+behalf of non-persons, is forbidden.)
 
 Non-casual personal use is strongly discouraged.
-
-Really, the main purpose here is simply a self-demonstration of module
-making that I can reuse for making more complex projects.
 
 * Instructions
 
@@ -69,13 +31,122 @@ To use:
 
 1. Clone repository
    - *nix, GitHub :: =git clone https://github.com/wobh/org.wobh.common-lisp.tools.chance.git ${XDG_DATA_HOME}/common-lisp/source/org.wobh.common-lisp.tools.chance=
-2. in REPL ~(require "asdf")~ (as needed)
-3. ~(asdf:load-system :org.wobh.common-lisp.tools.chance)~
-
-The test package is simply Lisp assertions and loads with the rest of
-the system. If the system loads without errors all the tests passed.
+2. in REPL =(require "asdf")= (as needed)
+3. =(asdf:load-system :org.wobh.common-lisp.tools.chance)=
 
 The package defines a nickname of ~chance~ for convenience.
+
+* Features
+** ~chance~
+*** Random numbers, characters
+
+- ~random-whole~
+- ~random-range~
+- ~random-digit~
+- ~random-alpha~
+
+*** Random Sequence position, and array index or subscripts
+
+- ~random-position~
+- ~random-array-index~
+- ~random-array-subscripts~
+
+*** Random sequence and array elements
+
+Return random element from the non-list sequence types
+
+- ~random-char~
+- ~random-svref~
+- ~random-aref~
+
+**** Random list item and general sequence element
+
+Here for the completeness and casual convenience, but a little less
+efficient than the specialized functions.
+
+- ~random-nth~
+- ~random-elt~
+
+*** Sample list items of different "types"
+
+Return a vector of randomly selected items from lists. Currently
+implemented with "algorithm R". May change to "algorithm L" in the
+future.
+
+- ~sample-list~
+  - return a vector of items
+- ~sample-alist~
+  - return a vector of associations: key-datum pairs
+- ~sample-plist~
+  - return a vector of properties: indicator-value pairs
+- ~sample-tree~
+  - returns a vector of nodes
+    - trees have to be "dotted" lists if you don't want a ~nil~ as the
+      last node
+  - used the "tree-equal" trick from lisp-tips to walk the tree
+- ~sample-biased-alist~
+  - returns a vector of alist "keys" chosen by weights in the alist
+    "datum"
+  - implemented with a "algorithm Achao with jumps"
+
+**** Random list items, of differnt list "types"
+
+Returns single list items, associations, properties or nodes.
+Implemented with the sample functions.
+
+- ~random-list-item~
+  - Prefer this to ~random-nth~
+- ~random-alist-assoc~
+- ~random-plist-property~
+- ~random-tree-node~
+- ~random-biased-alist~
+
+*** Sample hash-table mappings
+
+Return a vector of randomly selected mappings: key-value pairs from
+a hash-table.
+
+- ~sample-hash-table~
+   - return a vector of mappings
+- ~random-hash-table-mapping~
+  - return a single mapping
+- ~sample-biased-hash-table~
+  - return a vector of hash keys by weights in hash values
+- ~random-biased-hash-table~
+  - return a single hash key by weights in hash tables
+
+*** Shuffles
+
+Return shuffled sequences.
+
+- ~nshuffle-string~
+- ~nshuffle-simple-vector~
+- ~nshuffle-list~
+  - probably fine but maybe avoid
+- ~nshuffle-array~
+  - probably fine?
+- ~shuffle-sequence~
+  - returns shuffled copy of sequence
+
+See the TODO document for future ideas and features that might appear
+here.
+
+** ~chance-user~
+
+This is the interactive package which inherits all the symbols in the
+~chance~ system. Use for testing, experimenting, play.
+
+Enter environment with =(in-package #:chance-user)=
+
+Special features for ~chance-user~ forthcoming, see TODO.
+
+** ~chance-test~
+
+Currently the test package is a file of basic lisp assertions and
+loads. If =(load "chance-test")= raises no errors all the tests
+passed.
+
+Test improvement effort forthcoming, see TODO.
 
 * COMMENT org settings
 #+options: ':nil *:t -:t ::t <:t H:6 \n:nil ^:t arch:headline
