@@ -36,9 +36,14 @@
   ;; hash-table mappings
   (:export #:sample-hash-table
            #:random-hash-table-mapping)
+  (:export #:sample-biased-hash-table
+           #:random-biased-hash-table)
   ;; shuffles
-  (:export #:nshuffle
-           #:shuffle)
+  (:export #:nshuffle-string
+           #:nshuffle-simple-vector
+           #:nshuffle-list
+           #:nshuffle-array
+           #:shuffle-sequence)
   (:documentation "ORG.WOBH.COMMON-LISP.TOOLS.CHANCE
 
 Provides chance utilities."))
@@ -436,25 +441,67 @@ Where the hash-table key is the item
 
 ;;; Shuffle sequences
 
-(defun nshuffle (a-sequence &optional (random-state *random-state*))
-  "Destructively Knuth shuffle `a-sequence'."
-  (etypecase a-sequence
-    (list (loop
-            for counter from 0
-            for index = (random (+ 2 counter) random-state)
-            for item in a-sequence
-            do (rotatef (elt a-sequence index)
-                        (elt a-sequence counter))
-            finally (return a-sequence)))
-    (sequence (loop
-                for counter from 0
-                for index = (random (+ 2 counter) random-state)
-                for element across a-sequence
-                do (rotatef (elt a-sequence index)
-                            (elt a-sequence counter))
-                finally (return a-sequence)))))
+(defun nshuffle-string (a-string
+                        &optional (random-state *random-state*))
+  "Destructively shuffle `a-string'."
+  (loop
+    with size = (length a-string)
+    initially (when (< size 2)
+                (return a-string))
+    for counter from 2 below size
+    for index = (random counter random-state)
+    do (rotatef (char a-string index)
+                (char a-string counter))
+    finally (return a-string)))
 
-(defun shuffle (a-sequence &optional (random-state *random-state*))
-  "Return a Knuth shuffled copy of `a-sequence'."
-  (nshuffle (copy-seq a-sequence)
-            random-state))
+(defun nshuffle-simple-vector (a-simple-vector
+                               &optional (random-state *random-state*))
+  "Destructively shuffle `a-simple-vector'."
+  (loop
+    with size = (length a-simple-vector)
+    initially (when (< size 2)
+                (return a-simple-vector))
+    for counter from 2 below size
+    for index = (random (+ 2 counter) random-state)
+    for element across a-simple-vector
+    do (rotatef (svref a-simple-vector index)
+                (svref a-simple-vector counter))
+    finally (return a-simple-vector)))
+
+;; Probably fine.
+
+(defun nshuffle-list (a-list
+                      &optional (random-state *random-state*))
+  "Destructively shuffle `a-list'."
+  (loop
+    initially (when (endp (cdr a-list))
+                (return a-list))
+    for counter from 2
+    for index = (random counter random-state)
+    for item in a-list
+    do (rotatef (nth index a-list)
+                (nth counter a-list))
+    finally (return a-list)))
+
+(defun nshuffle-array (an-array
+                       &optional (random-state *random-state*))
+  "Destructively shuffle `a-simple-vector'."
+  (loop
+    initially (when (< (array-total-size an-array) 2)
+                (return an-array))
+    for counter from 0 below (array-total-size an-array)
+    for index = (random (+ 2 counter) random-state)
+    do (rotatef (aref an-array index)
+                (aref an-array counter))
+    finally (return an-array)))
+
+(defun shuffle-sequence (a-sequence
+                         &optional (random-state *random-state*))
+  "Return a shuffled copy of `a-sequence'."
+  (etypecase a-sequence
+    (string (nshuffle-string (copy-seq a-sequence)
+                             random-state))
+    (simple-vector (nshuffle-simple-vector (copy-seq a-sequence)
+                                           random-state))
+    (list (nshuffle-list (copy-list a-sequence)
+                         random-state))))
