@@ -30,6 +30,9 @@
            #:random-alist-assoc
            #:random-plist-property
            #:random-tree-node)
+  ;; biased random samplings
+  (:export #:sample-biased-alist
+           #:random-biased-alist)
   ;; hash-table mappings
   (:export #:sample-hash-table
            #:random-hash-table-mapping)
@@ -298,6 +301,55 @@ Provides chance utilities."))
                          &optional (random-state *random-state*))
   "Return random node in `a-tree'."
   (let ((sample (sample-tree 1 a-tree random-state)))
+    (svref sample 0)))
+
+
+;;; Sample biased items
+
+(defun sample-biased-alist (sample-to a-biased-alist
+                           &optional (random-state *random-state*))
+  "Return vector of weighted random items in `a-biased-alist'.
+
+Where the alist key is the item
+      and alist datum is the weight."
+  (declare (type (or simple-vector (integer 1)) sample-to)
+           (type list a-biased-alist))
+  (flet ((this-sampler (sample-size sample)
+           (loop
+             with to-jump = (random 1.0)
+             with to-pass = 1
+             for counter from 0
+             for (item weight) in a-biased-alist
+             for tally = weight then (+ tally weight)
+             if (< counter sample-size)
+               do (setf (svref sample counter)
+                        item)
+             else
+               do (let* ((to-keep (/ weight tally)))
+                    (decf to-jump (* to-keep to-pass))
+                    (setf to-pass (* to-pass (- 1 to-keep)))
+                    (when (<= to-jump 0)
+                      (setf (svref sample (random sample-size random-state))
+                            item)
+                      (setf to-jump (random 1.0)
+                            to-pass 1)))
+             finally (return sample))))
+    (etypecase sample-to
+      ((integer 1) (this-sampler sample-to
+                                 (make-array sample-to)))
+      (simple-vector (this-sampler (length sample-to)
+                                   sample-to)))))
+
+
+;;; Random biased items
+
+(defun random-biased-alist (a-biased-alist
+                            &optional (random-state *random-state*))
+  "Return a weighted random item in `a-biased-alist'.
+
+Where the alist key is the item
+      and alist datum is the weight."
+  (let ((sample (sample-biased-alist 1 a-biased-alist random-state)))
     (svref sample 0)))
 
 
