@@ -380,6 +380,41 @@ Where the alist key is the item
       (simple-vector (this-sampler (length sample-to)
                                    sample-to)))))
 
+(defun sample-biased-hash-table (sample-to a-biased-hash-table
+                                 &optional (random-state *random-state*))
+  "Return vector of weighted random items in `a-biased-hash-table'.
+
+Where the hash-table key is the item
+      and hash-table value is the weight."
+  (declare (type (or simple-vector (integer 1)) sample-to)
+           (type hash-table a-biased-hash-table))
+  (flet ((this-sampler (sample-size sample)
+           (loop
+             with to-jump = (random 1.0)
+             with to-pass = 1
+             for counter from 0
+             for item being each hash-key of a-biased-hash-table
+               using (hash-value weight)
+             for tally = weight then (+ tally weight)
+             if (< counter sample-size)
+               do (setf (svref sample counter)
+                        item)
+             else
+               do (let* ((to-keep (/ weight tally)))
+                    (decf to-jump (* to-keep to-pass))
+                    (setf to-pass (* to-pass (- 1 to-keep)))
+                    (when (<= to-jump 0)
+                      (setf (svref sample (random sample-size random-state))
+                            item)
+                      (setf to-jump (random 1.0)
+                            to-pass 1)))
+             finally (return sample))))
+    (etypecase sample-to
+      ((integer 1) (this-sampler sample-to
+                                 (make-array sample-to)))
+      (simple-vector (this-sampler (length sample-to)
+                                   sample-to)))))
+
 
 ;;; Random hash-table mapping
 
@@ -387,6 +422,15 @@ Where the alist key is the item
                                   &optional (random-state *random-state*))
   "Return random mapping (key-value pair) in `a-hash-table'."
   (let ((sample (sample-hash-table 1 a-hash-table random-state)))
+    (svref sample 0)))
+
+(defun random-biased-hash-table (a-biased-hash-table
+                                 &optional (random-state *random-state*))
+  "Return weighted random item (key) in `a-biased-hash-table'.
+
+Where the hash-table key is the item
+      and hash-table value is the weight."
+  (let ((sample (sample-biased-hash-table 1 a-biased-hash-table random-state)))
     (svref sample 0)))
 
 
