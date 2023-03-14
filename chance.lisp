@@ -315,8 +315,8 @@ Provides chance utilities."))
                            &optional (random-state *random-state*))
   "Return vector of weighted random items in `a-biased-alist'.
 
-Where the alist key is the item
-      and alist datum is the weight."
+Where the assoc key is the item
+      and assoc datum is the weight."
   (declare (type (or simple-vector (integer 1)) sample-to)
            (type list a-biased-alist))
   (flet ((this-sampler (sample-size sample)
@@ -352,8 +352,8 @@ Where the alist key is the item
                             &optional (random-state *random-state*))
   "Return a weighted random item in `a-biased-alist'.
 
-Where the alist key is the item
-      and alist datum is the weight."
+Where the assoc key is the item
+      and assoc datum is the weight."
   (let ((sample (sample-biased-alist 1 a-biased-alist random-state)))
     (svref sample 0)))
 
@@ -389,8 +389,8 @@ Where the alist key is the item
                                  &optional (random-state *random-state*))
   "Return vector of weighted random items in `a-biased-hash-table'.
 
-Where the hash-table key is the item
-      and hash-table value is the weight."
+Where the mapping key is the item
+      and mapping value is the weight."
   (declare (type (or simple-vector (integer 1)) sample-to)
            (type hash-table a-biased-hash-table))
   (flet ((this-sampler (sample-size sample)
@@ -433,8 +433,8 @@ Where the hash-table key is the item
                                  &optional (random-state *random-state*))
   "Return weighted random item (key) in `a-biased-hash-table'.
 
-Where the hash-table key is the item
-      and hash-table value is the weight."
+Where the mapping key is the item
+      and mapping value is the weight."
   (let ((sample (sample-biased-hash-table 1 a-biased-hash-table random-state)))
     (svref sample 0)))
 
@@ -462,8 +462,7 @@ Where the hash-table key is the item
     initially (when (< size 2)
                 (return a-simple-vector))
     for counter from 2 below size
-    for index = (random (+ 2 counter) random-state)
-    for element across a-simple-vector
+    for index = (random counter random-state)
     do (rotatef (svref a-simple-vector index)
                 (svref a-simple-vector counter))
     finally (return a-simple-vector)))
