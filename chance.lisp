@@ -58,13 +58,18 @@ Provides chance utilities."))
   (1+ (random bound
               random-state)))
 
-(defun random-range (bound1 bound2 &optional (random-state *random-state*))
-  "Return random number between bounds, inclusive."
+(defun random-range (bound1 bound2
+                     &optional
+                       (increment 1)
+                       (random-state *random-state*))
+  "Return random number between bounds, inclusive and in increments."
   (let ((upper (min bound1 bound2))
         (lower (1+ (max bound1 bound2))))
-    (+ upper
-       (random (- lower upper)
-               random-state))))
+    (* increment
+       (floor (+ upper
+                 (random (- lower upper)
+                         random-state))
+              increment))))
 
 (defun random-digit (&optional (base 10) (random-state *random-state*))
   "Return random digit character in given `base', default 10."
