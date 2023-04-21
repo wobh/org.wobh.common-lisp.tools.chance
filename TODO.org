@@ -63,10 +63,6 @@ https://exercism.io/my/solutions/7943ffe042e24686b09740553141c8a4?iteration_idx=
 but I'm sure there are bugs.
 
 * TODO improve test reporting
-* TODO setup asdf test op
-
-https://common-lisp.net/project/asdf/asdf/Predefined-operations-of-ASDF.html#test_002dop
-
 * TODO Toys
 
 I don't know if this should be included here or belongs in a separate
@@ -84,3 +80,8 @@ system but, it would be fun to have things like:
 There's a number of libraries out there that generate fake info in
 various formats and that seems like a fun thing to build. It would
 resonate with another interest of mine: grammars!
+
+* DONE setup asdf test op
+
+https://common-lisp.net/project/asdf/asdf/Predefined-operations-of-ASDF.html#test_002dop
+
