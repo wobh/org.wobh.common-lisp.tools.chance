@@ -1,6 +1,6 @@
 ;; -*- mode: lisp -*-
 
-(asdf:defsystem :org.wobh.common-lisp.tools.chance
+(defsystem "org.wobh.common-lisp.tools.chance"
   :description "A system of various randomness tools and toys"
   :version "0.0.2"
   :license "Copyright © 2016-2023 William Clifford All rights reserved."

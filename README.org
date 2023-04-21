@@ -32,7 +32,7 @@ To use:
 1. Clone repository
    - *nix, GitHub :: =git clone https://github.com/wobh/org.wobh.common-lisp.tools.chance.git ${XDG_DATA_HOME}/common-lisp/source/org.wobh.common-lisp.tools.chance=
 2. in REPL =(require "asdf")= (as needed)
-3. =(asdf:load-system :org.wobh.common-lisp.tools.chance)=
+3. =(asdf:load-system "org.wobh.common-lisp.tools.chance")=
 
 The package defines a nickname of ~chance~ for convenience.
 
