@@ -63,11 +63,11 @@ Provides chance utilities."))
                        (increment 1)
                        (random-state *random-state*))
   "Return random number between bounds, inclusive and in increments."
-  (let ((upper (min bound1 bound2))
-        (lower (1+ (max bound1 bound2))))
+  (let ((lower (min bound1 bound2))
+        (upper (1+ (max bound1 bound2))))
     (* increment
-       (floor (+ upper
-                 (random (- lower upper)
+       (floor (+ lower
+                 (random (- upper lower)
                          random-state))
               increment))))
 
