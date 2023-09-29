@@ -144,9 +144,7 @@ Special features for ~chance-user~ forthcoming, see TODO.
 
 To run tests: =(asdf:test-system "org.wobh.common-lisp.tools.chance")=
 
-The test package is simply a package of Lisp assertions. Running the
-tests tries to load the test package and if it loads without errors
-all the tests passed.
+Test improvement effort forthcoming, see TODO.
 
 * COMMENT org settings
 #+options: ':nil *:t -:t ::t <:t H:6 \n:nil ^:t arch:headline
