@@ -16,14 +16,16 @@ Provides some basic randomness tools.
 This is here shared with the idea that some might find it useful for
 personal experiments and toys--that's all I'm using it for. It might
 also be cautionarily if not pedagogically useful. All that said, it
-should not be expected to have any desireable characteristics or be
+should not be expected to have any desirable characteristics or be
 useful in any way.
 
-Non-personal use is forbidden. (For example: commercial use is
-forbidden. Use by non-persons, or use by any person or agent acting on
-behalf of non-persons, is forbidden.)
+Use by non-natural persons is forbidden.
 
-Non-casual personal use is strongly discouraged.
+Use by natural persons acting as agents on behalf of non-natural
+persons is also forbidden.
+
+Use by natural persons for non-casual purposes is strongly
+discouraged.
 
 * Instructions
 
